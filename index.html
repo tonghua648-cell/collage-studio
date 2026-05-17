@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Collage Studio</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="studio-shell">
+      <header class="site-header">
+        <a class="brand" href="#" aria-label="Collage Studio home">COLLAGE<br />STUDIO</a>
+        <nav class="main-nav" aria-label="Primary">
+          <a href="#editor">Editor</a>
+          <a href="#layers">Gallery</a>
+          <a href="#pricing">Pricing</a>
+          <a id="adviceLink" href="#advice">Advice</a>
+        </nav>
+        <button class="pro-ribbon" type="button">GO<br />PRO</button>
+      </header>
+
+      <section class="editor-hero" id="editor">
+        <h1>EDITOR</h1>
+        <p>Build for the underground. Drag. Drop. Destroy.</p>
+      </section>
+
+      <section class="editor-layout" aria-label="Collage editor">
+        <div class="canvas-board" id="canvasWrap">
+          <div class="paper-scrap" aria-hidden="true"></div>
+          <div class="edit-hint" id="textureEditHint">Drag to move. Wheel to scale. Shift + wheel to rotate. Click blank area to exit.</div>
+          <div class="drop-hint">
+            <span class="drop-icon" aria-hidden="true">+</span>
+            <h2 id="statusText">DRAG &amp; DROP</h2>
+            <p>or click to select source material</p>
+          </div>
+          <canvas id="previewCanvas" width="1" height="1" aria-label="处理结果预览"></canvas>
+        </div>
+
+        <aside class="side-stack">
+          <section class="properties-panel deck-panel">
+            <div class="panel-title">
+              <h3>LEVELS</h3>
+              <label class="mini-check" title="Enable levels">
+                <input data-toggle="levels" type="checkbox" checked />
+              </label>
+            </div>
+            <label class="mini-range" data-section="levels">
+              <span>Black</span>
+              <input id="blackInValue" data-number-param="blackIn" type="number" min="0" max="245" step="1" value="18" />
+              <input data-param="blackIn" type="range" min="0" max="245" step="1" value="18" />
+            </label>
+            <label class="mini-range" data-section="levels">
+              <span>Gamma</span>
+              <input id="gammaValue" data-number-param="gamma" type="number" min="0.35" max="2.8" step="0.01" value="1" />
+              <input data-param="gamma" type="range" min="0.35" max="2.8" step="0.01" value="1" />
+            </label>
+            <label class="mini-range" data-section="levels">
+              <span>White</span>
+              <input id="whiteInValue" data-number-param="whiteIn" type="number" min="10" max="255" step="1" value="232" />
+              <input data-param="whiteIn" type="range" min="10" max="255" step="1" value="232" />
+            </label>
+          </section>
+
+          <section class="layers-panel deck-panel" id="layers">
+            <div class="panel-title">
+              <h3>LAYERS</h3>
+              <label class="mini-check" title="Enable gradient map">
+                <input data-toggle="gradientMap" type="checkbox" checked />
+              </label>
+            </div>
+            <div id="gradientStrip" class="gradient-strip" data-section="gradientMap"></div>
+            <div id="textureSlots" class="texture-slots" data-section="gradientMap"></div>
+          </section>
+
+          <section class="quick-actions">
+            <button id="resetBtn" class="action-tile dark" type="button">UNDO<span>Clear</span></button>
+            <button id="downloadBtn" class="action-tile green" type="button" disabled>SAVE<span>Export</span></button>
+          </section>
+        </aside>
+      </section>
+
+      <section class="control-strip" aria-label="Processing controls">
+        <section class="deck-panel input-panel" id="dropZone">
+          <h3>INPUT</h3>
+          <label class="outline-button">
+            <input id="photoInput" type="file" accept="image/*" />
+            Select Image
+          </label>
+          <button id="removePhotoBtn" class="remove-button" type="button" disabled>Remove</button>
+          <button id="inputExportBtn" class="outline-button export-input" type="button" disabled>Export PNG</button>
+        </section>
+
+        <section class="deck-panel">
+          <div class="panel-title">
+            <h3>PERFORMANCE</h3>
+            <label class="mini-check">
+              <input data-toggle="performance" type="checkbox" checked />
+            </label>
+          </div>
+          <label class="mini-range" data-section="performance">
+            <span>Preview Size</span>
+            <input id="previewSizeValue" data-number-param="previewSize" type="number" min="500" max="1200" step="50" value="900" />
+            <input data-param="previewSize" type="range" min="500" max="1200" step="50" value="900" />
+          </label>
+        </section>
+
+        <section class="deck-panel">
+          <div class="panel-title">
+            <h3>POSTERIZATION</h3>
+            <label class="mini-check">
+              <input data-toggle="posterize" type="checkbox" checked />
+            </label>
+          </div>
+          <label class="mini-range" data-section="posterize">
+            <span>Levels</span>
+            <input id="posterizeLevelsValue" data-number-param="posterizeLevels" type="number" min="4" max="6" step="1" value="4" />
+            <input data-param="posterizeLevels" type="range" min="4" max="6" step="1" value="4" />
+          </label>
+        </section>
+      </section>
+
+      <section class="process-section">
+        <figure class="process-photo">
+          <div class="photo-frame" id="rawPhotoFrame"></div>
+          <figcaption>RAW.</figcaption>
+        </figure>
+        <div class="process-copy">
+          <h2>THE<br />PROCESS</h2>
+          <p>
+            Embrace the imperfections. The engine simulates ink bleed, paper grain, and off-register printing errors to give your digital work an undeniable physical presence.
+          </p>
+          <a id="manualLink" href="#manual">READ THE MANUAL -&gt;</a>
+        </div>
+      </section>
+
+      <footer class="studio-footer">
+        <strong>COLLAGE<br />STUDIO</strong>
+        <div class="footer-links">
+          <a href="#">Terms of Service</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Contact Support</a>
+          <a href="#">Instagram</a>
+          <a href="#">Newsletter</a>
+        </div>
+        <p>(C)1967-2024 COLLAGE STUDIO. Built for the underground.</p>
+      </footer>
+
+      <button id="oilPaintToggleBtn" class="hidden-control" type="button">Oil</button>
+      <button id="oilPaintRandomBtn" class="hidden-control" type="button">Random</button>
+      <button id="shadowsToggleBtn" class="hidden-control" type="button">Shadows</button>
+      <button id="shadowsRandomBtn" class="hidden-control" type="button">Random</button>
+      <button id="cutoutToggleBtn" class="hidden-control" type="button">Cutout</button>
+      <button id="cutoutRandomBtn" class="hidden-control" type="button">Random</button>
+
+      <div class="advice-modal" id="adviceModal" aria-hidden="true">
+        <section class="advice-dialog" role="dialog" aria-modal="true" aria-labelledby="adviceTitle">
+          <button class="advice-close" id="adviceCloseBtn" type="button" aria-label="Close advice panel">×</button>
+          <h2 id="adviceTitle">ADVICE</h2>
+          <p>Rate the current collage direction and leave feedback for the next pass.</p>
+          <div class="score-row" aria-label="Score">
+            <button type="button">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <button type="button">4</button>
+            <button type="button">5</button>
+          </div>
+          <label class="feedback-field">
+            <span>Feedback</span>
+            <textarea rows="5" placeholder="What should feel stronger, rougher, louder, or cleaner?"></textarea>
+          </label>
+          <button class="advice-submit" type="button">Submit Feedback</button>
+        </section>
+      </div>
+
+      <div class="manual-modal" id="manualModal" aria-hidden="true">
+        <section class="manual-dialog" role="dialog" aria-modal="true" aria-labelledby="manualTitle">
+          <button class="advice-close" id="manualCloseBtn" type="button" aria-label="Close manual">×</button>
+          <h2 id="manualTitle">MANUAL</h2>
+          <div class="manual-grid">
+            <article>
+              <h3>Input</h3>
+              <p>Drop an image onto the canvas or use Select Image. Remove clears the source and resets the preview.</p>
+            </article>
+            <article>
+              <h3>Levels</h3>
+              <p>Black, Gamma, and White reshape the grayscale source before posterization.</p>
+            </article>
+            <article>
+              <h3>Posterization</h3>
+              <p>Levels controls how many tone bands the image is split into for collage mapping.</p>
+            </article>
+            <article>
+              <h3>Gradient Map</h3>
+              <p>Each tone has a color swatch and a material preview. Upload a texture to replace a flat color.</p>
+            </article>
+            <article>
+              <h3>Material Edit</h3>
+              <p>Click a material preview, then drag on the canvas to move it. Wheel scales it. Shift plus wheel rotates it.</p>
+            </article>
+            <article>
+              <h3>Export & Advice</h3>
+              <p>Export saves the current collage as PNG. Advice opens a rating and feedback panel.</p>
+            </article>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
